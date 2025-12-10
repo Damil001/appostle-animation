@@ -7156,8 +7156,9 @@ var ia = ra,
     }
     createIntroAnimation() {
       let e = document.querySelector(`.hero-anim-sections__arrow-line`),
-        t = parseFloat(getComputedStyle(e).getPropertyValue(`--len`)),
-        n = document
+        t = 0;
+      e && (t = parseFloat(getComputedStyle(e).getPropertyValue(`--len`)));
+      let n = document
           .querySelector(`.hero-anim-sections__arrow-head--right`)
           .getTotalLength(),
         r = document
