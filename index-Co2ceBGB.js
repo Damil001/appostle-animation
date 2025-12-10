@@ -464,7 +464,7 @@ var o = class {
     }
     async loadAndExtract(e, t) {
       let n = new Image();
-      (n.src = e), await n.decode();
+      (n.crossOrigin = `anonymous`), (n.src = e), await n.decode();
       let r = n.height / n.width,
         i = Math.round(300 * r);
       (this.offscreenCanvas.width = 300),
