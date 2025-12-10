@@ -7158,12 +7158,10 @@ var ia = ra,
       let e = document.querySelector(`.hero-anim-sections__arrow-line`),
         t = 0;
       e && (t = parseFloat(getComputedStyle(e).getPropertyValue(`--len`)));
-      let n = document
-          .querySelector(`.hero-anim-sections__arrow-head--right`)
-          .getTotalLength(),
-        r = document
-          .querySelector(`.hero-anim-sections__arrow-head--left`)
-          .getTotalLength();
+      let n = document.querySelector(`.hero-anim-sections__arrow-head--right`),
+        r = n ? n.getTotalLength() : 0,
+        i = document.querySelector(`.hero-anim-sections__arrow-head--left`),
+        a = i ? i.getTotalLength() : 0;
       (this.soulTextSplit = new ia(`.hero-area__text--soul`, {
         type: `chars`,
       })),
@@ -7202,12 +7200,12 @@ var ia = ra,
           )
           .from(
             `.hero-anim-sections__arrow-head--right`,
-            { strokeDashoffset: n, duration: 0.5, ease: `expo.inOut` },
+            { strokeDashoffset: r, duration: 0.5, ease: `expo.inOut` },
             `>-.3`
           )
           .from(
             `.hero-anim-sections__arrow-head--left`,
-            { strokeDashoffset: r, duration: 0.5, ease: `expo.inOut` },
+            { strokeDashoffset: a, duration: 0.5, ease: `expo.inOut` },
             `<`
           )
           .add(() => this.arrow_loop_tl.play(), `+=2`);
