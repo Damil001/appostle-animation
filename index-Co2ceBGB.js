@@ -10474,4 +10474,12 @@ var Nc = document.querySelector(`.particle__container`),
   },
   Lc = new ca(Ic),
   Rc = new sa(Lc);
-Ic.useDebugPanel && (window.apostle_hero = Rc);
+Ic.useDebugPanel && (window.apostle_hero = Rc),
+  (async () => {
+    try {
+      await Rc.init(),
+        console.log(`ApostleHero component successfully initialized.`);
+    } catch (e) {
+      console.error(`Failed to initialize ApostleHero component:`, e);
+    }
+  })();
