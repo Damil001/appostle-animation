@@ -333,3 +333,4 @@ main {
 .hero-anim-sections__arrow-line {
   stroke-dasharray: var(--len) calc(var(--len) * 2);
 }
+/*$vite$:1*/
