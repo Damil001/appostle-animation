@@ -2579,10 +2579,22 @@
   var Q = Z,
     te = class {
       constructor(e, t = {}) {
-        (this.gsap_ctx = null), (this.config = e), (this.callbacks = t);
+        (this.gsap_ctx = null),
+          (this.config = e),
+          (this.callbacks = t),
+          (this.initialized = !1);
       }
       async init() {
-        await document.fonts.ready,
+        if (this.initialized) return;
+        let t = new Promise((e) => setTimeout(e, 2e3));
+        try {
+          await Promise.race([document.fonts.ready, t]);
+        } catch {
+          console.warn(
+            `Fonts took too long or failed to load. Starting animation anyway.`
+          );
+        }
+        (this.initialized = !0),
           (this.gsap_ctx = e.default.context(() => {
             this.createArrowTimeline(),
               this.createIntroAnimation(),
@@ -2591,24 +2603,23 @@
       }
       createIntroAnimation() {
         let t = document.querySelector(`.hero-anim-sections__arrow-line`),
-          n = 0;
-        t && (n = parseFloat(getComputedStyle(t).getPropertyValue(`--len`)));
-        let r = document.querySelector(
-            `.hero-anim-sections__arrow-head--right`
-          ),
-          i = r ? r.getTotalLength() : 0,
-          a = document.querySelector(`.hero-anim-sections__arrow-head--left`),
-          o = a ? a.getTotalLength() : 0;
+          n = document.querySelector(`.hero-anim-sections__arrow-head--right`),
+          r = document.querySelector(`.hero-anim-sections__arrow-head--left`),
+          i =
+            (t && parseFloat(getComputedStyle(t).getPropertyValue(`--len`))) ||
+            0,
+          a = n ? n.getTotalLength() : 0,
+          o = r ? r.getTotalLength() : 0;
         (this.soulTextSplit = new Q(`.hero-area__text--soul`, {
           type: `chars`,
         })),
           e.default
             .timeline()
             .to(`.hero-anim-sections__intro-cover`, {
-              duration: 2,
+              duration: 1.5,
               autoAlpha: 0,
+              ease: `power2.inOut`,
               force3D: !0,
-              ease: `circ.out`,
             })
             .from(
               this.config,
@@ -2618,7 +2629,7 @@
             .from(
               `.hero-area__text--we-give`,
               { alpha: 0, duration: 1.5, xPercent: -30, ease: `expo.out` },
-              `<+2`
+              `<+1.5`
             )
             .from(
               this.soulTextSplit.chars,
@@ -2633,12 +2644,12 @@
             )
             .from(
               `.hero-anim-sections__arrow-line`,
-              { strokeDashoffset: n, duration: 0.75, ease: `circ.out` },
+              { strokeDashoffset: i, duration: 0.75, ease: `circ.out` },
               `+=.25`
             )
             .from(
               `.hero-anim-sections__arrow-head--right`,
-              { strokeDashoffset: i, duration: 0.5, ease: `expo.inOut` },
+              { strokeDashoffset: a, duration: 0.5, ease: `expo.inOut` },
               `>-.3`
             )
             .from(
@@ -2646,7 +2657,7 @@
               { strokeDashoffset: o, duration: 0.5, ease: `expo.inOut` },
               `<`
             )
-            .add(() => this.arrow_loop_tl.play(), `+=2`);
+            .add(() => this.arrow_loop_tl.play(), `+=1`);
       }
       createArrowTimeline() {
         this.arrow_loop_tl = e.default
