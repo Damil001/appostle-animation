@@ -1,32 +1,33 @@
-(function (e) {
-  var t = Object.create,
-    n = Object.defineProperty,
-    r = Object.getOwnPropertyDescriptor,
-    i = Object.getOwnPropertyNames,
-    a = Object.getPrototypeOf,
-    o = Object.prototype.hasOwnProperty,
-    s = (e, t, a, s) => {
+(function (e, t) {
+  var n = Object.create,
+    r = Object.defineProperty,
+    i = Object.getOwnPropertyDescriptor,
+    a = Object.getOwnPropertyNames,
+    o = Object.getPrototypeOf,
+    s = Object.prototype.hasOwnProperty,
+    c = (e, t, n, o) => {
       if ((t && typeof t == `object`) || typeof t == `function`)
-        for (var c = i(t), l = 0, u = c.length, d; l < u; l++)
+        for (var c = a(t), l = 0, u = c.length, d; l < u; l++)
           (d = c[l]),
-            !o.call(e, d) &&
-              d !== a &&
-              n(e, d, {
+            !s.call(e, d) &&
+              d !== n &&
+              r(e, d, {
                 get: ((e) => t[e]).bind(null, d),
-                enumerable: !(s = r(t, d)) || s.enumerable,
+                enumerable: !(o = i(t, d)) || o.enumerable,
               });
       return e;
-    };
-  e = ((e, r, i) => (
-    (i = e == null ? {} : t(a(e))),
-    s(
-      r || !e || !e.__esModule
-        ? n(i, `default`, { value: e, enumerable: !0 })
-        : i,
-      e
-    )
-  ))(e);
-  let c = {
+    },
+    l = (e, t, i) => (
+      (i = e == null ? {} : n(o(e))),
+      c(
+        t || !e || !e.__esModule
+          ? r(i, `default`, { value: e, enumerable: !0 })
+          : i,
+        e
+      )
+    );
+  (e = l(e)), (t = l(t));
+  let u = {
       createVector: (e = 0, t = 0, n = 0) => ({ x: e, y: t, z: n }),
       add: (e, t) => ({
         x: e.x + t.x,
@@ -41,20 +42,20 @@
       mult: (e, t) => ({ x: e.x * t, y: e.y * t, z: (e.z || 0) * t }),
       mag: (e) => Math.sqrt(e.x * e.x + e.y * e.y + (e.z || 0) * (e.z || 0)),
       normalize: (e) => {
-        let t = c.mag(e);
+        let t = u.mag(e);
         return t
           ? { x: e.x / t, y: e.y / t, z: (e.z || 0) / t }
           : { x: 0, y: 0, z: 0 };
       },
       copy: (e) => ({ x: e.x, y: e.y, z: e.z || 0 }),
-      dist: (e, t) => c.mag(c.sub(e, t)),
+      dist: (e, t) => u.mag(u.sub(e, t)),
       lerp: (e, t, n) => ({
         x: e.x + (t.x - e.x) * n,
         y: e.y + (t.y - e.y) * n,
         z: (e.z || 0) + ((t.z || 0) - (e.z || 0)) * n,
       }),
       limit: (e, t) => {
-        let n = c.mag(e);
+        let n = u.mag(e);
         return n > t
           ? { x: (e.x / n) * t, y: (e.y / n) * t, z: ((e.z || 0) / n) * t }
           : { x: e.x, y: e.y, z: e.z || 0 };
@@ -76,7 +77,7 @@
       }),
       heading: (e) => Math.atan2(e.y, e.x),
     },
-    l = {
+    d = {
       lerp: (e, t, n) => e * (1 - n) + n * t,
       clamp: (e = 0, t, n = 1) => Math.min(n, Math.max(e, t)),
       map: (e, t, n, r, i) => ((e - t) / (n - t)) * (i - r) + r,
@@ -89,7 +90,7 @@
         return Math.sqrt(-2 * Math.log(n)) * Math.cos(2 * Math.PI * r) * t + e;
       },
     };
-  var u = class e {
+  var f = class e {
     constructor(e, t, n, r = 1) {
       (this.r = e), (this.g = t), (this.b = n), (this.a = r);
     }
@@ -122,29 +123,29 @@
         : `#${t}`;
     }
   };
-  let d = {
+  let p = {
       color(e) {
-        if (e instanceof u) return e;
+        if (e instanceof f) return e;
         if (typeof e == `object` && e)
-          return new u(e.r ?? 0, e.g ?? 0, e.b ?? 0, e.a ?? 1);
+          return new f(e.r ?? 0, e.g ?? 0, e.b ?? 0, e.a ?? 1);
         if (typeof e == `string`) {
           if (e.startsWith(`#`)) {
             let t = e.slice(1);
             return t.length === 8
-              ? new u(
+              ? new f(
                   parseInt(t.slice(0, 2), 16),
                   parseInt(t.slice(2, 4), 16),
                   parseInt(t.slice(4, 6), 16),
                   parseInt(t.slice(6, 8), 16) / 255
                 )
               : t.length === 3
-              ? new u(
+              ? new f(
                   parseInt(t[0] + t[0], 16),
                   parseInt(t[1] + t[1], 16),
                   parseInt(t[2] + t[2], 16),
                   1
                 )
-              : new u(
+              : new f(
                   (parseInt(t, 16) >> 16) & 255,
                   (parseInt(t, 16) >> 8) & 255,
                   parseInt(t, 16) & 255,
@@ -153,17 +154,17 @@
           }
           let t = e.match(/[\d.]+/g);
           if (t)
-            return new u(
+            return new f(
               parseInt(t[0]),
               parseInt(t[1]),
               parseInt(t[2]),
               t[3] ? parseFloat(t[3]) : 1
             );
         }
-        return new u(0, 0, 0, 1);
+        return new f(0, 0, 0, 1);
       },
       lerpColor(e, t, n) {
-        return new u(
+        return new f(
           (e.r + (t.r - e.r) * n) | 0,
           (e.g + (t.g - e.g) * n) | 0,
           (e.b + (t.b - e.b) * n) | 0,
@@ -178,7 +179,7 @@
         return r === i ? e[r] : this.lerpColor(e[r], e[i], n - r);
       },
     },
-    f = {
+    m = {
       linear: { in: (e) => e, out: (e) => e, inOut: (e) => e },
       quad: {
         in: (e) => e * e,
@@ -233,7 +234,7 @@
         },
       },
     },
-    p = ({
+    h = ({
       progress: e,
       inEnd: t = 0.25,
       holdEnd: n = 0.75,
@@ -244,16 +245,16 @@
       let o;
       if (e <= t) {
         let n = e / t;
-        o = f[a].out(n) * r;
+        o = m[a].out(n) * r;
       } else if (e < n) o = r;
       else {
         let t = (e - n) / (1 - n),
-          a = f[i].in(t);
+          a = m[i].in(t);
         o = r - a * r;
       }
       return o;
     };
-  var m = class {
+  var g = class {
       constructor(e, t) {
         (this.idx = e),
           (this.system = t),
@@ -261,22 +262,22 @@
           (this.size = this.system.CONFIG.size),
           (this.cnvW = this.system.cnv.width),
           (this.cnvH = this.system.cnv.height),
-          (this.vel = c.createVector(0, 0)),
-          (this.acc = c.createVector(0, 0)),
-          (this.physics_pos = c.createVector(0, 0)),
-          (this.radial_pos = c.createVector(0, 0)),
-          (this.curr_pos = c.copy(this.system.center)),
-          (this.start_progress = l.rand(0, 1)),
+          (this.vel = u.createVector(0, 0)),
+          (this.acc = u.createVector(0, 0)),
+          (this.physics_pos = u.createVector(0, 0)),
+          (this.radial_pos = u.createVector(0, 0)),
+          (this.curr_pos = u.copy(this.system.center)),
+          (this.start_progress = d.rand(0, 1)),
           (this.curr_progress = this.start_progress),
           (this.adjusted_progress = 0),
-          (this.progress_speed = l.rand(0.9, 1)),
+          (this.progress_speed = d.rand(0.9, 1)),
           (this.prev_progress = 0),
           (this.is_interacting_with_pointer = !1),
           (this.total_radius = this.system.ring_radius),
-          (this.start_ang = l.rand(0, Math.PI * 2)),
+          (this.start_ang = d.rand(0, Math.PI * 2)),
           (this.ang_vel = 1),
           (this.center_dist = 0),
-          (this.random_radius = l.rand(0.5, 1) * this.total_radius),
+          (this.random_radius = d.rand(0.5, 1) * this.total_radius),
           (this.max_speed = 20),
           (this.max_force = 0.1),
           (this.silhouette_target = null);
@@ -284,10 +285,10 @@
       update() {
         this.update_progress(),
           this.prev_progress > this.curr_progress &&
-            ((this.curr_pos = c.copy(this.system.center)),
-            (this.physics_pos = c.mult(this.physics_pos, 0)),
-            (this.vel = c.mult(this.vel, 0)),
-            (this.acc = c.mult(this.acc, 0)),
+            ((this.curr_pos = u.copy(this.system.center)),
+            (this.physics_pos = u.mult(this.physics_pos, 0)),
+            (this.vel = u.mult(this.vel, 0)),
+            (this.acc = u.mult(this.acc, 0)),
             this.system.silhouette_bounds &&
               (this.silhouette_target =
                 this.system.silhouette_bounds.getRandomSilhouettePoint())),
@@ -302,7 +303,7 @@
           this.system.CONFIG.silhouette_hard_boundary &&
             this.handle_boundary_collision(),
           this.update_physics(),
-          (this.curr_pos = c.add(this.radial_pos, this.physics_pos));
+          (this.curr_pos = u.add(this.radial_pos, this.physics_pos));
       }
       render() {
         this.update(), this.draw();
@@ -315,52 +316,52 @@
             (this.start_progress + this.adjusted_progress) % 1);
       }
       update_physics() {
-        (this.vel = c.add(this.vel, this.acc)),
-          (this.physics_pos = c.add(this.physics_pos, this.vel)),
-          (this.acc = c.mult(this.acc, 0));
+        (this.vel = u.add(this.vel, this.acc)),
+          (this.physics_pos = u.add(this.physics_pos, this.vel)),
+          (this.acc = u.mult(this.acc, 0));
       }
       apply_force(e) {
-        this.acc = c.add(this.acc, e);
+        this.acc = u.add(this.acc, e);
       }
       pointer_interaction({
         activate_edge: e = 100,
         strength: t = 0.2,
         action: n = `attract`,
       }) {
-        let r = c.sub(this.pointer.pos, this.curr_pos);
-        if (c.mag(r) < e) {
+        let r = u.sub(this.pointer.pos, this.curr_pos);
+        if (u.mag(r) < e) {
           this.is_interacting_with_pointer = !0;
-          let e = c.normalize(r),
-            i = c.mult(e, t);
+          let e = u.normalize(r),
+            i = u.mult(e, t);
           if (n === `attract`) this.apply_force(i);
           else if (n === `repel`) {
-            let e = c.mult(i, -1);
+            let e = u.mult(i, -1);
             this.apply_force(e);
           }
         } else this.is_interacting_with_pointer = !1;
       }
       seek_arrive({ target_vec: e, range: t = 350 }) {
-        let n = c.sub(e, this.curr_pos),
-          r = c.mag(n);
+        let n = u.sub(e, this.curr_pos),
+          r = u.mag(n);
         if (r < t) {
-          let e = l.map(r, 0, t, 0, this.max_speed);
-          (n = c.normalize(n)), (n = c.mult(n, e));
-        } else (n = c.normalize(n)), (n = c.mult(n, this.max_speed));
-        let i = c.sub(n, this.vel);
-        return (i = c.limit(i, this.max_force)), i;
+          let e = d.map(r, 0, t, 0, this.max_speed);
+          (n = u.normalize(n)), (n = u.mult(n, e));
+        } else (n = u.normalize(n)), (n = u.mult(n, this.max_speed));
+        let i = u.sub(n, this.vel);
+        return (i = u.limit(i, this.max_force)), i;
       }
       calculate_blended_forces() {
         let e = this.system.CONFIG.silhouette_blend,
           t = this.seek_arrive({ target_vec: this.radial_pos }),
-          n = c.createVector(0, 0);
+          n = u.createVector(0, 0);
         this.system.silhouette_bounds &&
           this.silhouette_target &&
           (n = this.seek_arrive({ target_vec: this.silhouette_target }));
-        let r = c.lerp(t, n, e);
+        let r = u.lerp(t, n, e);
         this.apply_force(r), this.apply_edge_steering();
       }
       radial_motion() {
-        let e = f[this.system.CONFIG.radial_ease_type][
+        let e = m[this.system.CONFIG.radial_ease_type][
             this.system.CONFIG.radial_ease_direction
           ](this.curr_progress),
           t = this.system.CONFIG.radial_ease_strength || 1,
@@ -369,7 +370,7 @@
           i = this.start_ang + r,
           a = this.total_radius * this.system.CONFIG.ring_interior_edge;
         a *= this.system.CONFIG.tweened_radius_adj;
-        let o = l.map(n, 0, 1, a, this.total_radius);
+        let o = d.map(n, 0, 1, a, this.total_radius);
         (this.radial_pos.x = Math.cos(i) * o + this.system.center.x),
           (this.radial_pos.y = Math.sin(i) * o + this.system.center.y);
       }
@@ -379,11 +380,11 @@
           this.system.CONFIG.silhouette_blend <= 0
         )
           return;
-        let e = c.add(this.curr_pos, this.vel);
+        let e = u.add(this.curr_pos, this.vel);
         this.system.silhouette_bounds.isInsideBoundary(e.x, e.y) ||
-          ((this.vel = c.mult(this.vel, -0.5)),
-          (this.vel.x += l.rand(-0.5, 0.5)),
-          (this.vel.y += l.rand(-0.5, 0.5)));
+          ((this.vel = u.mult(this.vel, -0.5)),
+          (this.vel.x += d.rand(-0.5, 0.5)),
+          (this.vel.y += d.rand(-0.5, 0.5)));
       }
       apply_edge_steering() {
         if (
@@ -400,15 +401,15 @@
               this.curr_pos.x,
               this.curr_pos.y
             ),
-            n = l.map(e, -1, 0, 0, 1),
-            r = l.clamp(0, n, 1),
+            n = d.map(e, -1, 0, 0, 1),
+            r = d.clamp(0, n, 1),
             i = this.system.CONFIG.edge_steering_strength,
             a = { x: t.x * r * i, y: t.y * r * i };
           this.apply_force(a);
         }
       }
       calculate_size() {
-        let e = p({
+        let e = h({
             progress: this.curr_progress,
             inEnd: 0.1,
             holdEnd: 0.65,
@@ -416,13 +417,13 @@
             easeInFunc: `circ`,
             easeOutFunc: `sine`,
           }),
-          t = c.mag(c.mult(this.vel, 2)),
-          n = l.map(t, 0.01, this.max_speed, 1, this.system.CONFIG.size * 1.5);
+          t = u.mag(u.mult(this.vel, 2)),
+          n = d.map(t, 0.01, this.max_speed, 1, this.system.CONFIG.size * 1.5);
         (this.size = this.system.CONFIG.size * e * n),
-          (this.size = l.clamp(0.1, this.size, this.system.CONFIG.size * 5));
+          (this.size = d.clamp(0.1, this.size, this.system.CONFIG.size * 5));
       }
       calculate_color() {
-        (this.color = d.lerpColor(
+        (this.color = p.lerpColor(
           this.system.color2,
           this.system.color1,
           this.curr_progress
@@ -451,7 +452,7 @@
         this.idx === e && this.system.time % t === 0 && n();
       }
     },
-    h = class {
+    _ = class {
       constructor({
         imgUrl: e,
         imgElementSelector: t,
@@ -595,7 +596,7 @@
           this.updateImageBounds();
       }
     },
-    g = class {
+    v = class {
       constructor(e, t, n, r, i = null) {
         (this.particles = []),
           (this.cnv = e),
@@ -606,7 +607,7 @@
           (this.pp_dims = this.particle_positioner.getBoundingClientRect()),
           (this.ring_interior_edge = this.CONFIG.ring_interior_edge),
           (this.ctx = this.cnv.getContext(`2d`)),
-          (this.center = c.createVector()),
+          (this.center = u.createVector()),
           (this.frameCount = 0),
           (this.silhouetteConfig = i),
           (this.silhouette_bounds = null),
@@ -616,11 +617,11 @@
           this.updateColors();
       }
       updateColors() {
-        (this.bgColor = d.color(this.CONFIG.bg_color)),
+        (this.bgColor = p.color(this.CONFIG.bg_color)),
           this.bgColor.modA(this.CONFIG.bg_color_alpha),
           (this.bgColor = this.bgColor.toRGBA()),
-          (this.color1 = d.color(this.CONFIG.color1)),
-          (this.color2 = d.color(this.CONFIG.color2));
+          (this.color1 = p.color(this.CONFIG.color1)),
+          (this.color2 = p.color(this.CONFIG.color2));
       }
       clearCanvas() {
         (this.ctx.fillStyle = this.CONFIG.bg_color),
@@ -640,14 +641,14 @@
           (this.ring_radius = this.pp_dims.width / 2),
           (this.cnv.width = window.innerWidth),
           (this.cnv.height = window.innerHeight);
-        let e = this.ring_center ? c.copy(this.ring_center) : null;
-        this.ring_center = c.createVector(
+        let e = this.ring_center ? u.copy(this.ring_center) : null;
+        this.ring_center = u.createVector(
           this.pp_dims.left + this.pp_dims.width / 2,
           this.pp_dims.top + this.pp_dims.height / 2
         );
         let t = !this.center.x && !this.center.y,
-          n = e && c.dist(e, this.ring_center) > 50;
-        (t || n) && (this.center = c.copy(this.ring_center)),
+          n = e && u.dist(e, this.ring_center) > 50;
+        (t || n) && (this.center = u.copy(this.ring_center)),
           this.silhouette_bounds &&
             this.silhouette_bounds.updateCanvasDims(
               this.cnv.width,
@@ -655,7 +656,7 @@
             );
       }
       setParticleSize() {
-        for (let e of this.particles) e.size = l.rand(0.1, this.CONFIG.size);
+        for (let e of this.particles) e.size = d.rand(0.1, this.CONFIG.size);
       }
       async init() {
         this.sizeCanvas();
@@ -666,7 +667,7 @@
           threshold: this.silhouetteConfig.threshold,
         };
         this.silhouetteConfig &&
-          ((this.silhouette_bounds = new h(e)),
+          ((this.silhouette_bounds = new _(e)),
           await this.silhouette_bounds.ready),
           (this.introStarted = !0);
       }
@@ -675,7 +676,7 @@
           if (this.particles.length < this.CONFIG.count) {
             for (let e = 0; e < 50; e++)
               this.particles.push(
-                new m(
+                new g(
                   this.particles.length - 1,
                   this,
                   this.CONFIG,
@@ -683,7 +684,7 @@
                 )
               );
             this.particles.push(
-              new m(this.particles.length - 1, this, this.CONFIG, this.pointer)
+              new g(this.particles.length - 1, this, this.CONFIG, this.pointer)
             );
           } else this.introDone = !1;
       }
@@ -692,13 +693,13 @@
         let t;
         if (this.silhouette_bounds && this.CONFIG.silhouette_blend > 0) {
           let e = this.silhouette_bounds.getCenter();
-          t = c.lerp(
+          t = u.lerp(
             this.ring_center,
-            c.createVector(e.x, e.y),
+            u.createVector(e.x, e.y),
             this.CONFIG.silhouette_blend
           );
-        } else t = c.copy(this.ring_center);
-        this.center = c.lerp(this.center, t, 0.01);
+        } else t = u.copy(this.ring_center);
+        this.center = u.lerp(this.center, t, 0.01);
         for (let e of this.particles) e.update();
       }
       draw() {
@@ -713,7 +714,7 @@
         this.update(e), this.draw();
       }
     },
-    _ = class e {
+    y = class e {
       constructor(t, n, r, i, a = `div`) {
         (this.parent = t),
           (this.object = n),
@@ -854,7 +855,7 @@
           this.parent.$children.removeChild(this.domElement);
       }
     },
-    v = class extends _ {
+    b = class extends y {
       constructor(e, t, n) {
         super(e, t, n, `lil-boolean`, `label`),
           (this.$input = document.createElement(`input`)),
@@ -871,7 +872,7 @@
         return (this.$input.checked = this.getValue()), this;
       }
     };
-  function y(e) {
+  function x(e) {
     let t, n;
     return (
       (t = e.match(/(#|0x)?([a-f0-9]{6})/i))
@@ -886,26 +887,26 @@
       n ? `#` + n : !1
     );
   }
-  var b = {
+  var S = {
       isPrimitive: !0,
       match: (e) => typeof e == `string`,
-      fromHexString: y,
-      toHexString: y,
+      fromHexString: x,
+      toHexString: x,
     },
-    x = {
+    C = {
       isPrimitive: !0,
       match: (e) => typeof e == `number`,
       fromHexString: (e) => parseInt(e.substring(1), 16),
       toHexString: (e) => `#` + e.toString(16).padStart(6, 0),
     },
-    S = [
-      b,
-      x,
+    w = [
+      S,
+      C,
       {
         isPrimitive: !1,
         match: (e) => Array.isArray(e) || ArrayBuffer.isView(e),
         fromHexString(e, t, n = 1) {
-          let r = x.fromHexString(e);
+          let r = C.fromHexString(e);
           (t[0] = (((r >> 16) & 255) / 255) * n),
             (t[1] = (((r >> 8) & 255) / 255) * n),
             (t[2] = ((r & 255) / 255) * n);
@@ -913,14 +914,14 @@
         toHexString([e, t, n], r = 1) {
           r = 255 / r;
           let i = ((e * r) << 16) ^ ((t * r) << 8) ^ ((n * r) << 0);
-          return x.toHexString(i);
+          return C.toHexString(i);
         },
       },
       {
         isPrimitive: !1,
         match: (e) => Object(e) === e,
         fromHexString(e, t, n = 1) {
-          let r = x.fromHexString(e);
+          let r = C.fromHexString(e);
           (t.r = (((r >> 16) & 255) / 255) * n),
             (t.g = (((r >> 8) & 255) / 255) * n),
             (t.b = ((r & 255) / 255) * n);
@@ -928,14 +929,14 @@
         toHexString({ r: e, g: t, b: n }, r = 1) {
           r = 255 / r;
           let i = ((e * r) << 16) ^ ((t * r) << 8) ^ ((n * r) << 0);
-          return x.toHexString(i);
+          return C.toHexString(i);
         },
       },
     ];
-  function C(e) {
-    return S.find((t) => t.match(e));
+  function T(e) {
+    return w.find((t) => t.match(e));
   }
-  var w = class extends _ {
+  var E = class extends y {
       constructor(e, t, n, r) {
         super(e, t, n, `lil-color`),
           (this.$input = document.createElement(`input`)),
@@ -951,7 +952,7 @@
           this.$display.appendChild(this.$input),
           this.$widget.appendChild(this.$display),
           this.$widget.appendChild(this.$text),
-          (this._format = C(this.initialValue)),
+          (this._format = T(this.initialValue)),
           (this._rgbScale = r),
           (this._initialValueHexString = this.save()),
           (this._textFocused = !1),
@@ -962,7 +963,7 @@
             this._callOnFinishChange();
           }),
           this.$text.addEventListener(`input`, () => {
-            let e = y(this.$text.value);
+            let e = x(this.$text.value);
             e && this._setValueFromHexString(e);
           }),
           this.$text.addEventListener(`focus`, () => {
@@ -1007,7 +1008,7 @@
         );
       }
     },
-    T = class extends _ {
+    D = class extends y {
       constructor(e, t, n) {
         super(e, t, n, `lil-function`),
           (this.$button = document.createElement(`button`)),
@@ -1024,7 +1025,7 @@
           (this.$disable = this.$button);
       }
     },
-    E = class extends _ {
+    O = class extends y {
       constructor(e, t, n, r, i, a) {
         super(e, t, n, `lil-number`),
           this._initInput(),
@@ -1296,7 +1297,7 @@
         return this._max !== void 0;
       }
     },
-    D = class extends _ {
+    k = class extends y {
       constructor(e, t, n, r) {
         super(e, t, n, `lil-option`),
           (this.$select = document.createElement(`select`)),
@@ -1341,7 +1342,7 @@
         );
       }
     },
-    O = class extends _ {
+    A = class extends y {
       constructor(e, t, n) {
         super(e, t, n, `lil-string`),
           (this.$input = document.createElement(`input`)),
@@ -1365,7 +1366,7 @@
         return (this.$input.value = this.getValue()), this;
       }
     },
-    k = `.lil-gui {
+    j = `.lil-gui {
   font-family: var(--font-family);
   font-size: var(--font-size);
   line-height: 1;
@@ -1787,14 +1788,14 @@
   font-family: "lil-gui";
   src: url("data:application/font-woff2;charset=utf-8;base64,d09GMgABAAAAAALkAAsAAAAABtQAAAKVAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFQGYACDMgqBBIEbATYCJAMUCwwABCAFhAoHgQQbHAbIDiUFEYVARAAAYQTVWNmz9MxhEgodq49wYRUFKE8GWNiUBxI2LBRaVnc51U83Gmhs0Q7JXWMiz5eteLwrKwuxHO8VFxUX9UpZBs6pa5ABRwHA+t3UxUnH20EvVknRerzQgX6xC/GH6ZUvTcAjAv122dF28OTqCXrPuyaDER30YBA1xnkVutDDo4oCi71Ca7rrV9xS8dZHbPHefsuwIyCpmT7j+MnjAH5X3984UZoFFuJ0yiZ4XEJFxjagEBeqs+e1iyK8Xf/nOuwF+vVK0ur765+vf7txotUi0m3N0m/84RGSrBCNrh8Ee5GjODjF4gnWP+dJrH/Lk9k4oT6d+gr6g/wssA2j64JJGP6cmx554vUZnpZfn6ZfX2bMwPPrlANsB86/DiHjhl0OP+c87+gaJo/gY084s3HoYL/ZkWHTRfBXvvoHnnkHvngKun4KBE/ede7tvq3/vQOxDXB1/fdNz6XbPdcr0Vhpojj9dG+owuSKFsslCi1tgEjirjXdwMiov2EioadxmqTHUCIwo8NgQaeIasAi0fTYSPTbSmwbMOFduyh9wvBrESGY0MtgRjtgQR8Q1bRPohn2UoCRZf9wyYANMXFeJTysqAe0I4mrherOekFdKMrYvJjLvOIUM9SuwYB5DVZUwwVjJJOaUnZCmcEkIZZrKqNvRGRMvmFZsmhP4VMKCSXBhSqUBxgMS7h0cZvEd71AWkEhGWaeMFcNnpqyJkyXgYL7PQ1MoSq0wDAkRtJIijkZSmqYTiSImfLiSWXIZwhRh3Rug2X0kk1Dgj+Iu43u5p98ghopcpSo0Uyc8SnjlYX59WUeaMoDqmVD2TOWD9a4pCRAzf2ECgwGcrHjPOWY9bNxq/OL3I/QjwEAAAA=") format("woff2");
 }`;
-  function A(e) {
+  function M(e) {
     let t = document.createElement(`style`);
     t.innerHTML = e;
     let n = document.querySelector(`head link[rel=stylesheet], head style`);
     n ? document.head.insertBefore(t, n) : document.head.appendChild(t);
   }
-  var j = !1,
-    M = class e {
+  var N = !1,
+    P = class e {
       constructor({
         parent: e,
         autoPlace: t = e === void 0,
@@ -1836,7 +1837,7 @@
         }
         this.domElement.classList.add(`lil-root`),
           s && this.domElement.classList.add(`lil-allow-touch-styles`),
-          !j && o && (A(k), (j = !0)),
+          !N && o && (M(j), (N = !0)),
           n
             ? n.appendChild(this.domElement)
             : t &&
@@ -1846,17 +1847,17 @@
           (this._closeFolders = a);
       }
       add(e, t, n, r, i) {
-        if (Object(n) === n) return new D(this, e, t, n);
+        if (Object(n) === n) return new k(this, e, t, n);
         let a = e[t];
         switch (typeof a) {
           case `number`:
-            return new E(this, e, t, n, r, i);
+            return new O(this, e, t, n, r, i);
           case `boolean`:
-            return new v(this, e, t);
+            return new b(this, e, t);
           case `string`:
-            return new O(this, e, t);
+            return new A(this, e, t);
           case `function`:
-            return new T(this, e, t);
+            return new D(this, e, t);
         }
         console.error(
           `gui.add failed
@@ -1871,7 +1872,7 @@
         );
       }
       addColor(e, t, n = 1) {
-        return new w(this, e, t, n);
+        return new E(this, e, t, n);
       }
       addFolder(t) {
         let n = new e({ parent: this, title: t });
@@ -1881,7 +1882,7 @@
         return (
           e.controllers &&
             this.controllers.forEach((t) => {
-              t instanceof T ||
+              t instanceof D ||
                 (t._name in e.controllers && t.load(e.controllers[t._name]));
             }),
           t &&
@@ -1896,7 +1897,7 @@
         let t = { controllers: {}, folders: {} };
         return (
           this.controllers.forEach((e) => {
-            if (!(e instanceof T)) {
+            if (!(e instanceof D)) {
               if (e._name in t.controllers)
                 throw Error(
                   `Cannot save GUI with duplicate property "${e._name}"`
@@ -2034,8 +2035,8 @@
         );
       }
     };
-  function N(e, t, n) {
-    let r = new M({ title: `Debug Panel` }),
+  function F(e, t, n) {
+    let r = new P({ title: `Debug Panel` }),
       i = r.addFolder(`Save/Reset`);
     i
       .add(
@@ -2158,21 +2159,21 @@
    * @license Copyright 2025, GreenSock. All rights reserved. Subject to the terms at https://gsap.com/standard-license.
    * @author: Jack Doyle
    */
-  var P,
-    F,
-    I,
-    L = () => I || Q.register(window.gsap),
-    R = typeof Intl < `u` ? new Intl.Segmenter() : 0,
-    z = (e) =>
+  var I,
+    L,
+    R,
+    ee = () => R || Q.register(window.gsap),
+    z = typeof Intl < `u` ? new Intl.Segmenter() : 0,
+    B = (e) =>
       typeof e == `string`
-        ? z(document.querySelectorAll(e))
+        ? B(document.querySelectorAll(e))
         : `length` in e
         ? Array.from(e)
         : [e],
-    B = (e) => z(e).filter((e) => e instanceof HTMLElement),
-    V = [],
-    H = function () {},
-    U = /\s+/g,
+    V = (e) => B(e).filter((e) => e instanceof HTMLElement),
+    H = [],
+    U = function () {},
+    te = /\s+/g,
     W = RegExp(
       `\\p{RI}\\p{RI}|\\p{Emoji}(\\p{EMod}|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F})?(\\u{200D}\\p{Emoji}(\\p{EMod}|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F})?)*|.`,
       `gu`
@@ -2180,7 +2181,7 @@
     G = { left: 0, top: 0, width: 0, height: 0 },
     K = (e, t) => {
       if (t) {
-        let n = new Set(e.join(``).match(t) || V),
+        let n = new Set(e.join(``).match(t) || H),
           r = e.length,
           i,
           a,
@@ -2231,7 +2232,7 @@
         };
       return c && (r = r.replace(`++`, ``)), (l.collection = n), l;
     },
-    ee = (e, t, n, r) => {
+    ne = (e, t, n, r) => {
       let i = Y(`line`, n, r),
         a = window.getComputedStyle(e).textAlign || `left`;
       return (n, r) => {
@@ -2269,7 +2270,7 @@
         F,
         I,
         L,
-        z;
+        R;
       for (
         typeof p == `object`
           ? ((C = p.delimiter || p), (S = p.replaceWith || ``))
@@ -2282,7 +2283,7 @@
           for (
             F = w.textContent || ``,
               m
-                ? (F = F.replace(U, ` `))
+                ? (F = F.replace(te, ` `))
                 : v &&
                   (F = F.replace(
                     /\n/g,
@@ -2292,7 +2293,7 @@
                   )),
               h && (F = h(F, e)),
               w.textContent = F,
-              T = S || C ? F.split(C || S) : F.match(s) || V,
+              T = S || C ? F.split(C || S) : F.match(s) || H,
               L = T[T.length - 1],
               O = x ? L.slice(-1) === ` ` : !L,
               L || T.pop(),
@@ -2332,18 +2333,18 @@
                 r)
               )
                 for (
-                  j = R
+                  j = z
                     ? K(
-                        [...R.segment(I)].map((e) => e.segment),
+                        [...z.segment(I)].map((e) => e.segment),
                         c
                       )
-                    : I.match(s) || V,
-                    z = 0;
-                  z < j.length;
-                  z++
+                    : I.match(s) || H,
+                    R = 0;
+                  R < j.length;
+                  R++
                 )
                   E.appendChild(
-                    j[z] === ` ` ? document.createTextNode(` `) : r(j[z])
+                    j[R] === ` ` ? document.createTextNode(` `) : r(j[R])
                   );
               if (a && l) {
                 if (
@@ -2377,8 +2378,8 @@
     Z = class e {
       constructor(e, t) {
         (this.isSplit = !1),
-          L(),
-          (this.elements = B(e)),
+          ee(),
+          (this.elements = V(e)),
           (this.chars = []),
           (this.words = []),
           (this.lines = []),
@@ -2407,7 +2408,7 @@
               clearTimeout(r), (r = setTimeout(i, 200));
             }),
         }),
-          H(this),
+          U(this),
           this.split(t);
       }
       split(e) {
@@ -2428,7 +2429,7 @@
           f = u && !d && !l,
           p = s && (`push` in s ? RegExp(`(?:` + s.join(`|`) + `)`, `gu`) : s),
           m = p ? RegExp(p.source + `|` + W.source, `gu`) : W,
-          h = !!e.ignore && B(e.ignore),
+          h = !!e.ignore && V(e.ignore),
           { orig: g, animTime: _, obs: v } = this._data,
           y;
         return (
@@ -2453,8 +2454,8 @@
                 x,
                 S;
               if ((X(t, e, v, _, f, r && (l || f), h, m, p, !1), l)) {
-                let n = z(t.childNodes),
-                  r = ee(t, n, e, c),
+                let n = B(t.childNodes),
+                  r = ne(t, n, e, c),
                   i,
                   a = [],
                   o = 0,
@@ -2523,10 +2524,10 @@
                 })
               )),
           (this.isSplit = !0),
-          F &&
+          L &&
             (o
-              ? F.addEventListener(`loadingdone`, this._split)
-              : F.status === `loading` &&
+              ? L.addEventListener(`loadingdone`, this._split)
+              : L.status === `loading` &&
                 console.warn(`SplitText called before fonts loaded`)),
           (y = a && a(this)) &&
             y.totalTime &&
@@ -2560,7 +2561,7 @@
             this.masks.length =
               0),
           (this.isSplit = !1),
-          F?.removeEventListener(`loadingdone`, this._split),
+          L?.removeEventListener(`loadingdone`, this._split),
           r && ((this._data.animTime = r.totalTime()), r.revert()),
           (t = (e = this.vars).onRevert) == null || t.call(e, this),
           this
@@ -2570,14 +2571,15 @@
         return new e(t, n);
       }
       static register(e) {
-        (P = P || e || window.gsap),
-          P && ((z = P.utils.toArray), (H = P.core.context || H)),
-          !I && window.innerWidth > 0 && ((F = document.fonts), (I = !0));
+        (I = I || e || window.gsap),
+          I && ((B = I.utils.toArray), (U = I.core.context || U)),
+          !R && window.innerWidth > 0 && ((L = document.fonts), (R = !0));
       }
     };
   Z.version = `3.13.0`;
-  var Q = Z,
-    te = class {
+  var Q = Z;
+  e.default.registerPlugin(Q, t.default);
+  var re = class {
       constructor(e, t = {}) {
         (this.gsap_ctx = null),
           (this.config = e),
@@ -2586,78 +2588,54 @@
       }
       async init() {
         if (this.initialized) return;
-        let t = new Promise((e) => setTimeout(e, 2e3));
-        try {
-          await Promise.race([document.fonts.ready, t]);
-        } catch {
-          console.warn(
-            `Fonts took too long or failed to load. Starting animation anyway.`
-          );
-        }
-        (this.initialized = !0),
+        let n = new Promise((e) => setTimeout(e, 2e3));
+        await Promise.race([document.fonts.ready, n]),
+          (this.initialized = !0),
           (this.gsap_ctx = e.default.context(() => {
-            this.createArrowTimeline(),
+            (this.soulTextSplit = new Q(`.hero-area__text--soul`, {
+              type: `chars,words`,
+            })),
+              this.createArrowTimeline(),
               this.createIntroAnimation(),
-              this.createScrollTriggerAnimation();
+              this.createScrollTriggerAnimation(),
+              t.default.refresh();
           }));
       }
       createIntroAnimation() {
-        let t = document.querySelector(`.hero-anim-sections__arrow-line`),
-          n = document.querySelector(`.hero-anim-sections__arrow-head--right`),
-          r = document.querySelector(`.hero-anim-sections__arrow-head--left`),
-          i =
-            (t && parseFloat(getComputedStyle(t).getPropertyValue(`--len`))) ||
-            0,
-          a = n ? n.getTotalLength() : 0,
-          o = r ? r.getTotalLength() : 0;
-        (this.soulTextSplit = new Q(`.hero-area__text--soul`, {
-          type: `chars`,
-        })),
-          e.default
-            .timeline()
+        let t = e.default.timeline();
+        t
+          .set(`.hero-area__textwrap--soul`, {
+            opacity: 1,
+            visibility: `visible`,
+          })
+          .set(this.soulTextSplit.chars, { opacity: 0, y: 20 }),
+          t
             .to(`.hero-anim-sections__intro-cover`, {
               duration: 1.5,
               autoAlpha: 0,
               ease: `power2.inOut`,
-              force3D: !0,
             })
-            .from(
-              this.config,
-              { ring_interior_edge: 0, duration: 4, ease: `expo.inOut` },
-              `<+.5`
-            )
-            .from(
+            .to(
               `.hero-area__text--we-give`,
-              { alpha: 0, duration: 1.5, xPercent: -30, ease: `expo.out` },
-              `<+1.5`
+              { alpha: 1, xPercent: 0, duration: 1, ease: `expo.out` },
+              `-=0.5`
             )
-            .from(
+            .to(
               this.soulTextSplit.chars,
               {
-                alpha: 0,
-                scale: 1.5,
-                stagger: 0.1,
-                duration: 1.5,
-                ease: `expo.out`,
+                opacity: 1,
+                y: 0,
+                stagger: 0.05,
+                duration: 0.8,
+                ease: `back.out(1.7)`,
               },
-              `>-.25`
-            )
-            .from(
-              `.hero-anim-sections__arrow-line`,
-              { strokeDashoffset: i, duration: 0.75, ease: `circ.out` },
-              `+=.25`
-            )
-            .from(
-              `.hero-anim-sections__arrow-head--right`,
-              { strokeDashoffset: a, duration: 0.5, ease: `expo.inOut` },
-              `>-.3`
-            )
-            .from(
-              `.hero-anim-sections__arrow-head--left`,
-              { strokeDashoffset: o, duration: 0.5, ease: `expo.inOut` },
-              `<`
-            )
-            .add(() => this.arrow_loop_tl.play(), `+=1`);
+              `-=0.3`
+            ),
+          t.from(
+            this.config,
+            { ring_interior_edge: 0, duration: 3, ease: `expo.inOut` },
+            0
+          );
       }
       createArrowTimeline() {
         this.arrow_loop_tl = e.default
@@ -2688,6 +2666,8 @@
               scrub: 2.5,
               pin: !0,
               anticipatePin: 1,
+              invalidateOnRefresh: !0,
+              fastScrollEnd: !0,
               snap: {
                 snapTo: `labels`,
                 duration: { min: 2, max: 3 },
@@ -2818,7 +2798,7 @@
         this.gsap_ctx && this.gsap_ctx.revert();
       }
     },
-    ne = class {
+    ie = class {
       constructor(e = 300) {
         (this.defaultDelay = e), (this.timeout = null);
       }
@@ -2835,17 +2815,17 @@
         this.cancel();
       }
     },
-    re = class {
+    ae = class {
       constructor(e) {
         (this.configManager = e),
           (this.CONFIG = this.configManager.get()),
           (this.pointer = {
             vel: 0,
-            pos: c.createVector(),
-            last: c.createVector(),
-            norm: c.createVector(),
-            cent: c.createVector(),
-            centNorm: c.createVector(),
+            pos: u.createVector(),
+            last: u.createVector(),
+            norm: u.createVector(),
+            cent: u.createVector(),
+            centNorm: u.createVector(),
           }),
           (this.heroAreaInView = !0),
           (this.isAnimating = !1),
@@ -2856,13 +2836,13 @@
           (this.frameCount = 0),
           (this.scrollAnimation = null),
           (this.debugPanel = null),
-          (this.resizeDebouncer = new ne(250)),
+          (this.resizeDebouncer = new ie(250)),
           (this.ready = this.init()),
           (this.start_debug_manager_closed = !0);
       }
       async init() {
         let e = this.CONFIG.silhouetteConfig || null;
-        (this.particle_system = new g(
+        (this.particle_system = new v(
           document.getElementById(`particle__canvas`),
           document.querySelector(`.hero-area__ps-positioner`),
           this.CONFIG,
@@ -2871,12 +2851,12 @@
         )),
           await this.particle_system.ready,
           this.setupEventListeners(),
-          (this.scrollAnimation = new te(this.CONFIG, {
+          (this.scrollAnimation = new re(this.CONFIG, {
             onRefresh: () => this.particle_system.sizeCanvas(),
           })),
           await this.scrollAnimation.init(),
           this.CONFIG.useDebugPanel &&
-            ((this.debugPanel = N(
+            ((this.debugPanel = F(
               this.CONFIG,
               this.particle_system,
               this.configManager
@@ -2934,8 +2914,8 @@
             this.heroAreaInView)
           ) {
             for (
-              this.pointer.vel = c.dist(this.pointer.last, this.pointer.pos),
-                this.pointer.last = c.copy(this.pointer.pos);
+              this.pointer.vel = u.dist(this.pointer.last, this.pointer.pos),
+                this.pointer.last = u.copy(this.pointer.pos);
               this.accumulator >= this.TIMESTEP;
 
             )
@@ -2966,7 +2946,7 @@
           this.debugPanel && this.debugPanel.destroy();
       }
     },
-    ie = class {
+    oe = class {
       constructor(e, t = `particleSketchConfig`) {
         (this.defaultConfig = { ...e }),
           (this.storageKey = t),
@@ -3029,8 +3009,8 @@
       }
     };
   e.default.registerPlugin(Q);
-  var ae = document.querySelector(`.particle__container`),
-    oe = document.querySelector(`body`),
+  var se = document.querySelector(`.particle__container`),
+    ce = document.querySelector(`body`),
     $ = (e, t, n) => {
       if (e)
         try {
@@ -3041,10 +3021,10 @@
         }
       return n;
     },
-    se = {
+    le = {
       useDebugPanel: !1,
-      count: $(ae, `--num-particles`, 500),
-      bg_color: $(oe, `--hero-bg-color`, `#000000`),
+      count: $(se, `--num-particles`, 500),
+      bg_color: $(ce, `--hero-bg-color`, `#000000`),
       size: 2,
       ring_interior_edge: 0.5,
       tweened_radius_adj: 1,
@@ -3070,6 +3050,6 @@
       },
       debug_val: 0,
     },
-    ce = new ie(se);
-  window.apostle_hero = new re(ce);
-})(gsap);
+    ue = new oe(le);
+  window.apostle_hero = new ae(ue);
+})(gsap, ScrollTrigger);
