@@ -2606,7 +2606,8 @@
             opacity: 1,
             visibility: `visible`,
           })
-          .set(this.soulTextSplit.chars, { opacity: 0, y: 20 }),
+          .set(this.soulTextSplit.chars, { opacity: 0, y: 20 })
+          .set(`.hero-area__text--we-give`, { alpha: 0, xPercent: -20 }),
           t
             .to(`.hero-anim-sections__intro-cover`, {
               duration: 1.5,
@@ -2615,8 +2616,8 @@
             })
             .to(
               `.hero-area__text--we-give`,
-              { alpha: 1, xPercent: 0, duration: 1, ease: `expo.out` },
-              `-=0.5`
+              { alpha: 1, xPercent: 0, duration: 1.2, ease: `expo.out` },
+              `-=0.8`
             )
             .to(
               this.soulTextSplit.chars,
@@ -2627,7 +2628,7 @@
                 duration: 0.8,
                 ease: `back.out(1.7)`,
               },
-              `-=0.3`
+              `-=0.5`
             ),
           t.from(
             this.config,
