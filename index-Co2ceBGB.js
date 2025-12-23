@@ -2586,11 +2586,9 @@
           (this.callbacks = t),
           (this.initialized = !1);
       }
-      async init() {
-        if (this.initialized) return;
-        let n = new Promise((e) => setTimeout(e, 2e3));
-        await Promise.race([document.fonts.ready, n]),
-          (this.initialized = !0),
+      init() {
+        this.initialized ||
+          ((this.initialized = !0),
           (this.gsap_ctx = e.default.context(() => {
             (this.soulTextSplit = new Q(`.hero-area__text--soul`, {
               type: `chars,words`,
@@ -2599,7 +2597,7 @@
               this.createIntroAnimation(),
               this.createScrollTriggerAnimation(),
               t.default.refresh();
-          }));
+          })));
       }
       createIntroAnimation() {
         let t = e.default.timeline();
